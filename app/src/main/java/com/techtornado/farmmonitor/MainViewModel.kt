@@ -24,16 +24,20 @@ class MainViewModel: ViewModel() {
     val client = HttpClient(OkHttp) {
         install(Resources)
         defaultRequest {
-            host = "http://api.agromonitoring.com/agro/1.0"
+            host = "api.agromonitoring.com/agro/1.0"
         }
     }
 
     fun getSoil() {
         viewModelScope.launch(Dispatchers.IO) {
-            val responseString = client.get(PolygonsResource()).bodyAsText()
-            Log.d("MainViewModel", responseString)
-            val polygons: List<Polygon> = Json.decodeFromString(responseString)
-            data.update { polygons }
+            try {
+                val responseString = client.get(PolygonsResource()).bodyAsText()
+                Log.d("MainViewModel", responseString)
+                val polygons: List<Polygon> = Json.decodeFromString(responseString)
+                data.update { polygons }
+            } catch (e: Exception) {
+                Log.e("MainViewModel", e.toString())
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ ktor = "3.1.2"
 coroutines = "1.9.0"
 serialization-plugin = "2.1.20"
 serialization-json = "1.8.1"
+maps-compose = "6.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -43,6 +44,8 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 
 serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
+
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "maps-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
