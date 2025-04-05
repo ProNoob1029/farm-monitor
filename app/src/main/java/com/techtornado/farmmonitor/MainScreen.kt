@@ -15,8 +15,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.maps.model.LatLng
+import com.techtornado.farmmonitor.data.CurrentWeather
 import com.techtornado.farmmonitor.data.Polygon
 import com.techtornado.farmmonitor.data.Soil
+import com.techtornado.farmmonitor.data.Stat
 
 @Composable
 fun MainScreen(
@@ -25,12 +27,16 @@ fun MainScreen(
 ) {
     val data by viewModel.polygons.collectAsStateWithLifecycle()
     val soil by viewModel.soil.collectAsStateWithLifecycle()
+    val stat by viewModel.stat.collectAsStateWithLifecycle()
+    val weather by viewModel.weather.collectAsStateWithLifecycle()
 
     MainScreen(
         modifier = modifier,
         onGet = viewModel::getSoil,
         data = data,
-        soil = soil
+        soil = soil,
+        stat = stat,
+        weather = weather
     )
 }
 
@@ -39,7 +45,9 @@ fun MainScreen(
     modifier: Modifier = Modifier,
     onGet: () -> Unit,
     data: List<Polygon>,
-    soil: Soil
+    soil: Soil,
+    stat: Stat?,
+    weather: CurrentWeather?
 ) {
     Column(
         modifier = modifier
@@ -62,6 +70,6 @@ fun MainScreen(
                 }
             }
         )
-        Text(soil.toString())
+        Text(weather.toString())
     }
 }
