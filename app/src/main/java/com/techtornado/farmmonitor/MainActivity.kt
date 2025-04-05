@@ -18,8 +18,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             FarmMonitorTheme {
                 Scaffold { padding ->
-                    MainScreen(
+                    /*MainScreen(
                         modifier = Modifier.padding(padding)
+                    )*/
+                    CreateLandScreen(
+                        modifier = Modifier.padding(padding),
+                        onDone = { name, polygon ->  }
                     )
                 }
             }
