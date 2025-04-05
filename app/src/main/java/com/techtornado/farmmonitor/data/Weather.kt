@@ -8,9 +8,9 @@ import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
 @JsonIgnoreUnknownKeys
 @Serializable
-data class CurrentWeather(
+data class Weather(
     val dt: Long,
-    val weather: List<Weather>,
+    val weather: List<Precipitation>,
     val main: Main,
     val wind: Wind,
     val clouds: Clouds,
@@ -19,7 +19,7 @@ data class CurrentWeather(
 ) {
     @JsonIgnoreUnknownKeys
     @Serializable
-    data class Weather(
+    data class Precipitation(
         val id: Int,
         val main: String,
         val description: String,
@@ -36,7 +36,8 @@ data class CurrentWeather(
         val pressure: Int,
         val humidity: Int,
         val sea_level: Int,
-        val grnd_level: Int
+        val grnd_level: Int,
+        val temp_kf: Double = 0.0
     )
 
     @JsonIgnoreUnknownKeys

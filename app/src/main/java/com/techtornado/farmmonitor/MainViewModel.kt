@@ -3,13 +3,14 @@ package com.techtornado.farmmonitor
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.techtornado.farmmonitor.data.CurrentWeather
-import com.techtornado.farmmonitor.data.NDVI
+import com.techtornado.farmmonitor.data.Forecast
+import com.techtornado.farmmonitor.data.Weather
 import com.techtornado.farmmonitor.data.Polygon
 import com.techtornado.farmmonitor.data.SatImg
 import com.techtornado.farmmonitor.data.Soil
 import com.techtornado.farmmonitor.data.Stat
 import com.techtornado.farmmonitor.resources.CurrentWeatherResource
+import com.techtornado.farmmonitor.resources.ForecastResource
 import com.techtornado.farmmonitor.resources.PolygonsResource
 import com.techtornado.farmmonitor.resources.SatImgResource
 import com.techtornado.farmmonitor.resources.SoilResource
@@ -24,7 +25,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlin.math.roundToInt
 
@@ -32,7 +32,8 @@ class MainViewModel: ViewModel() {
     val polygons = MutableStateFlow(emptyList<Polygon>())
     val soil = MutableStateFlow(Soil())
     val stat = MutableStateFlow<Stat?>(null)
-    val weather = MutableStateFlow<CurrentWeather?>(null)
+    val weather = MutableStateFlow<Weather?>(null)
+    val forecast = MutableStateFlow<Forecast>(emptyList())
 
     val client = HttpClient(OkHttp) {
         install(Resources)
@@ -70,9 +71,15 @@ class MainViewModel: ViewModel() {
                 }
                 val weatherResponse = client.get(CurrentWeatherResource(lat = polys[0].center[1], lon = polys[0].center[0])).bodyAsText()
                 Log.d("MainViewModel", weatherResponse)
-                val currWeather: CurrentWeather = Json.decodeFromString(weatherResponse)
+                val currWeather: Weather = Json.decodeFromString(weatherResponse)
                 weather.update {
                     currWeather
+                }
+                val forecastResponse = client.get(ForecastResource(lat = polys[0].center[1], lon = polys[0].center[0])).bodyAsText()
+                Log.d("MainViewModel", forecastResponse)
+                val weatherForecast: Forecast = Json.decodeFromString(forecastResponse)
+                forecast.update {
+                    weatherForecast
                 }
             } catch (e: Exception) {
                 Log.e("MainViewModel", e.toString())
