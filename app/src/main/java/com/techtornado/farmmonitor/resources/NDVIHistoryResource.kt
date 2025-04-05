@@ -4,12 +4,9 @@ import com.techtornado.farmmonitor.APP_ID
 import io.ktor.resources.Resource
 
 @Resource("/ndvi/history")
-data class NDVIResource(
+data class NDVIHistoryResource(
     val appid: String = APP_ID,
-) {
-    @Resource("{id}")
-    data class ById(
-        val parent: NDVIResource = NDVIResource(),
-        val id: String
-    )
-}
+    val polygon_id: String,
+    val end: Long = System.currentTimeMillis() / 1000,
+    val start: Long = end - 60 * 60 * 24 * 30
+)

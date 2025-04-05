@@ -1,11 +1,13 @@
 package com.techtornado.farmmonitor.data
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
+@JsonIgnoreUnknownKeys
 @Serializable
 data class NDVI(
     val dt: Long,
-    val source: String,
+    val source: String = "",
     val zoom: Int,
     val dc: Int,
     val cl: Double,

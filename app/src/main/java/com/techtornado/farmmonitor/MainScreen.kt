@@ -37,15 +37,17 @@ fun MainScreen(
     val stat by viewModel.stat.collectAsStateWithLifecycle()
     val weather by viewModel.weather.collectAsStateWithLifecycle()
     val forecast by viewModel.forecast.collectAsStateWithLifecycle()
+    val aiResponse by viewModel.aiResponse.collectAsStateWithLifecycle()
 
     MainScreen(
         modifier = modifier,
-        onGet = viewModel::getSoil,
+        onGet = viewModel::getAiResponse,
         data = data,
         soil = soil,
         stat = stat,
         weather = weather,
-        forecast = forecast
+        forecast = forecast,
+        aiResponse = aiResponse
     )
 }
 
@@ -57,7 +59,8 @@ fun MainScreen(
     soil: Soil,
     stat: Stat?,
     weather: Weather?,
-    forecast: Forecast
+    forecast: Forecast,
+    aiResponse: String
 ) {
     Column(
         modifier = modifier
@@ -103,6 +106,6 @@ fun MainScreen(
             },
             polygon = editablePolygon.toList()
         )
-        Text(forecast.toString())
+        Text(aiResponse)
     }
 }
