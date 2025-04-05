@@ -25,6 +25,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import kotlin.math.roundToInt
 
 class MainViewModel: ViewModel() {
@@ -46,6 +49,7 @@ class MainViewModel: ViewModel() {
         Log.i("MainViewModel", "ndvi fetched successfully")
         val currentWeather: Weather = client.get(CurrentWeatherResource(lat = plot.center[1], lon = plot.center[0])).bodyAsText().decode()
         Log.i("MainViewModel", "weather fetched successfully")
+        Log.i("MainViewModel", "current date: ${currentWeather.dt.convertTimestampToReadableFormat()}")
         val forecast: Forecast = client.get(ForecastResource(lat = plot.center[1], lon = plot.center[0])).bodyAsText().decode()
         Log.i("MainViewModel", "forecast fetched successfully")
         val soil: Soil = client.get(SoilResource(polyid = plot.id)).bodyAsText().decode()
@@ -64,7 +68,7 @@ class MainViewModel: ViewModel() {
                 for (ndvi in ndviHistory) {
                     text("""
                         NDVI DATAPOINT
-                        timestamp: ${ndvi.dt}
+                        timestamp: ${ndvi.dt.convertTimestampToReadableFormat()}
                         standard deviation: ${ndvi.data.std}
                         first quartile: ${ndvi.data.p25}
                         min index: ${ndvi.data.min}
@@ -76,15 +80,15 @@ class MainViewModel: ViewModel() {
                 }
                 text("""
                         CURRENT WEATHER
-                        timestamp: ${currentWeather.dt}
+                        timestamp: ${currentWeather.dt.convertTimestampToReadableFormat()}
                         description: ${currentWeather.weather[0].description}
-                        temperature: ${currentWeather.main.temp}
-                        feels like temp: ${currentWeather.main.feels_like}
-                        min temp: ${currentWeather.main.temp_min}
-                        max temp: ${currentWeather.main.temp_max}
+                        temperature celsius: ${currentWeather.main.temp - 273.15}
+                        feels like temp celsius: ${currentWeather.main.feels_like - 273.15}
+                        min temp celsius: ${currentWeather.main.temp_min - 273.15}
+                        max temp celsius: ${currentWeather.main.temp_max - 273.15}
                         pressure: ${currentWeather.main.pressure}
                         humidity: ${currentWeather.main.humidity}
-                        wind speed: ${currentWeather.wind.speed}
+                        wind speed meter/sec: ${currentWeather.wind.speed}
                         wind direction degrees: ${currentWeather.wind.deg}
                         wind gust: ${currentWeather.wind.gust}
                         cloudiness percentage: ${currentWeather.clouds.all}
@@ -95,15 +99,15 @@ class MainViewModel: ViewModel() {
                 for (weather in forecast) {
                     text("""
                         FORECAST DATAPOINT
-                        timestamp: ${weather.dt}
+                        timestamp: ${weather.dt.convertTimestampToReadableFormat()}
                         description: ${weather.weather[0].description}
-                        temperature: ${weather.main.temp}
-                        feels like temp: ${weather.main.feels_like}
-                        min temp: ${weather.main.temp_min}
-                        max temp: ${weather.main.temp_max}
+                        temperature celsius: ${weather.main.temp - 273.15}
+                        feels like temp celsius: ${weather.main.feels_like - 273.15}
+                        min temp celsius: ${weather.main.temp_min - 273.15}
+                        max temp celsius: ${weather.main.temp_max - 273.15}
                         pressure: ${weather.main.pressure}
                         humidity: ${weather.main.humidity}
-                        wind speed: ${weather.wind.speed}
+                        wind speed meter/sec: ${weather.wind.speed}
                         wind direction degrees: ${weather.wind.deg}
                         wind gust: ${weather.wind.gust}
                         cloudiness percentage: ${weather.clouds.all}
@@ -113,10 +117,10 @@ class MainViewModel: ViewModel() {
                 }
                 text("""
                         CURRENT SOIL DATA
-                        timestamp: ${soil.dt}
+                        timestamp: ${soil.dt.convertTimestampToReadableFormat()}
                         moisture: ${soil.moisture}
-                        surface temperature: ${soil.t0}
-                        temperature at 10 centimeters depth: ${soil.t10}
+                        surface temperature celsius: ${soil.t0 - 273.15}
+                        temperature at 10 centimeters depth celsius: ${soil.t10 - 273.15}
                     """.trimIndent())
             }
         ).text
@@ -174,4 +178,10 @@ class MainViewModel: ViewModel() {
     }
 
     inline fun <reified T> String.decode(): T = Json.decodeFromString<T>(this)
+
+    fun Long.convertTimestampToReadableFormat(): String {
+        val sdf = SimpleDateFormat("yyyy-MMM-dd HH:mm:ss", Locale.getDefault())
+        val date = Date(this * 1000)
+        return sdf.format(date)
+    }
 }
