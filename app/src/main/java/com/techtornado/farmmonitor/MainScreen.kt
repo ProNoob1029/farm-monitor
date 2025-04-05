@@ -1,7 +1,5 @@
 package com.techtornado.farmmonitor
 
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,18 +16,21 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.android.gms.maps.model.LatLng
 import com.techtornado.farmmonitor.data.Polygon
+import com.techtornado.farmmonitor.data.Soil
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = viewModel()
 ) {
-    val data by viewModel.data.collectAsStateWithLifecycle()
+    val data by viewModel.polygons.collectAsStateWithLifecycle()
+    val soil by viewModel.soil.collectAsStateWithLifecycle()
 
     MainScreen(
         modifier = modifier,
         onGet = viewModel::getSoil,
-        data = data
+        data = data,
+        soil = soil
     )
 }
 
@@ -37,7 +38,8 @@ fun MainScreen(
 fun MainScreen(
     modifier: Modifier = Modifier,
     onGet: () -> Unit,
-    data: List<Polygon>
+    data: List<Polygon>,
+    soil: Soil
 ) {
     Column(
         modifier = modifier
@@ -54,15 +56,12 @@ fun MainScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(500.dp),
-            /*polymaps = data.firstOrNull()?.geo_json?.geometry?.coordinates?.firstOrNull()?.map {
-                LatLng(it[1], it[0])
-            } ?: emptyList()*/
             polymaps = data.map { polygon ->
                 polygon.geo_json.geometry.coordinates[0].map { points ->
                     LatLng(points[1], points[0])
                 }
             }
         )
-        Text(data.toString())
+        Text(soil.toString())
     }
 }
