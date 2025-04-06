@@ -17,12 +17,12 @@ data class Polygon(
 ) {
     @Serializable
     data class GeoJson(
-        val type: String,
+        val type: String = "Feature",
         val geometry: Geometry
     ) {
         @Serializable
         data class Geometry(
-            val type: String,
+            val type: String = "Polygon",
             val coordinates: List<List<List<Double>>>
         )
     }

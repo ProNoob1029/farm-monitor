@@ -25,6 +25,7 @@ class MonitorApplication: Application() {
             install(ContentNegotiation) {
                 json(Json {
                     ignoreUnknownKeys = true
+                    encodeDefaults = true
                 })
             }
             defaultRequest {

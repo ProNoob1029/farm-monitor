@@ -178,8 +178,6 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    inline fun <reified T> String.decode(): T = Json.decodeFromString<T>(this)
-
     fun Long.convertTimestampToReadableFormat(): String {
         val sdf = SimpleDateFormat("yyyy-MMM-dd HH:mm:ss", Locale.getDefault())
         val date = Date(this * 1000)

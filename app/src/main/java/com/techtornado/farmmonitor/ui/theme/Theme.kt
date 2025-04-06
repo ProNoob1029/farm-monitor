@@ -1,6 +1,5 @@
 package com.techtornado.farmmonitor.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -10,6 +9,9 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import com.techtornado.farmmonitor.R
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -52,7 +54,23 @@ fun FarmMonitorTheme(
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
+        typography = Typography.copy(
+            displayLarge = Typography.displayLarge.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            displayMedium = Typography.displayMedium.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            displaySmall = Typography.displaySmall.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            headlineLarge = Typography.headlineLarge.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            headlineMedium = Typography.headlineMedium.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            headlineSmall = Typography.headlineSmall.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            titleLarge = Typography.titleLarge.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            titleMedium = Typography.titleMedium.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            titleSmall = Typography.titleSmall.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            bodyLarge = Typography.bodyLarge.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            bodyMedium = Typography.bodyMedium.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            bodySmall = Typography.bodySmall.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            labelLarge = Typography.labelLarge.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            labelMedium = Typography.labelMedium.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+            labelSmall = Typography.labelSmall.copy(fontFamily = FontFamily(Font(R.font.cookie_run_regular))),
+        ),
         content = content
     )
 }
