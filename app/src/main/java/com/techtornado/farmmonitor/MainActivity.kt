@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.techtornado.farmmonitor.screens.CreateLandScreen
+import com.techtornado.farmmonitor.screens.FirstScreen
 import com.techtornado.farmmonitor.ui.theme.FarmMonitorTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,13 +16,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             FarmMonitorTheme {
                 Scaffold { padding ->
-                    MainScreen(
+                    /*MainScreen(
                         modifier = Modifier.padding(padding)
-                    )
+                    )*/
                     /*CreateLandScreen(
                         modifier = Modifier.padding(padding),
                         onDone = { name, polygon ->  }
                     )*/
+                    FirstScreen(
+                        modifier = Modifier.padding(padding)
+                    )
                 }
             }
         }
