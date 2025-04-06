@@ -23,9 +23,13 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier.padding(padding),
                         onDone = { name, polygon ->  }
                     )*/
-                    FirstScreen(
+                    /*FirstScreen(
+                        modifier = Modifier.padding(padding)
+                    )*/
+                    FieldsScreen(
                         modifier = Modifier.padding(padding)
                     )
+
                 }
             }
         }
