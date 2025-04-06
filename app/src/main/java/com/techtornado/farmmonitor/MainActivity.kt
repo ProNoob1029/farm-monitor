@@ -3,12 +3,14 @@ package com.techtornado.farmmonitor
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.techtornado.farmmonitor.screens.FieldsScreen
-import com.techtornado.farmmonitor.screens.SoilScreen
-import com.techtornado.farmmonitor.screens.WeatherScreen
+import com.techtornado.farmmonitor.screens.CreateLandScreen
+import com.techtornado.farmmonitor.screens.FirstScreen
+import com.techtornado.farmmonitor.screens.LandDashboard
 import com.techtornado.farmmonitor.ui.theme.FarmMonitorTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,7 +18,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             FarmMonitorTheme {
-                Scaffold { padding ->
+                Surface(
+                    modifier = Modifier.fillMaxSize()
+                ) {
                     /*MainScreen(
                         modifier = Modifier.padding(padding)
                     )*/
@@ -27,15 +31,7 @@ class MainActivity : ComponentActivity() {
                     /*FirstScreen(
                         modifier = Modifier.padding(padding)
                     )*/
-                    /*FieldsScreen(
-                        modifier = Modifier.padding(padding)
-                    )*/
-                    /*WeatherScreen(
-                        modifier = Modifier.padding(padding)
-                    )*/
-                    SoilScreen(
-                        modifier = Modifier.padding(padding)
-                    )
+                    LandDashboard()
                 }
             }
         }
