@@ -16,14 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.techtornado.farmmonitor.data.Land
-import com.techtornado.farmmonitor.data.Weather
 
 @Composable
-fun ForecastScreen(
+fun EditDeleteScreen(
     modifier: Modifier = Modifier,
-    viewModel: ForecastViewModel = viewModel(),
-    land: Land
+    viewModel: EditDeleteViewModel = viewModel(),
 ) {
 
     Column(modifier = modifier) {
@@ -35,7 +32,7 @@ fun ForecastScreen(
         ) {
             Box() {
                 Text(
-                    "Forecast",
+                    "Edit and Delete",
                     modifier.padding(16.dp),
                     style = MaterialTheme.typography.headlineLarge,
                     fontStyle = FontStyle.Italic
@@ -63,7 +60,7 @@ fun ForecastScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = land.forecast.sortedBy{it.rain.`3h`}.last().rain.`3h`.toString()
+                                ""
                             )
                         }
                     }
