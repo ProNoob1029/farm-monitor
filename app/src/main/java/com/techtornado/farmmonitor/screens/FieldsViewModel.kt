@@ -1,4 +1,4 @@
-package com.techtornado.farmmonitor
+package com.techtornado.farmmonitor.screens
 
 import androidx.lifecycle.ViewModel
 
