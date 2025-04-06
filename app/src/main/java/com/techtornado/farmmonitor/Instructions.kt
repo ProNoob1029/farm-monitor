@@ -2,15 +2,15 @@ package com.techtornado.farmmonitor
 
 const val INSTRUCTIONS = """
 Metadata:
-Instruction Set Version: 2.0 (High Density).
-Provide the output in Romanian.
+
+Instruction Set Version: 2.0 (High Density)
 Units & Precision:
 
-Temperatures: only Celsius (°C), precision to 0.1°C if available in input.
+Temperature: only Celsius (°C), precision to 0.1°C if available in input.
 Precipitation/Irrigation: Millimeters (mm), precision to 0.1 mm if available.
 Wind Speed: Meters per second (m/s), state if km/h provided. Report average and max gust.
 Soil Moisture: Volumetric Water Content (VWC %) preferred, specify if tension (kPa) provided. Report to 1% VWC or relevant kPa precision. Clearly define VWC = (Volume Water / Volume Soil) * 100.
-Soil Temperature: Celsius (°C), precision to 0.1°C if available.
+Soil Temperature: only Celsius (°C), precision to 0.1°C if available.
 Solar Radiation: MJ/m²/day or W/m² (specify).
 ET (Evapotranspiration): mm/day, specify type (ET₀ - reference, ETc - crop).
 Nutrients: Standard units (kg/ha, ppm, meq/100g - specify based on input).
