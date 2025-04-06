@@ -86,4 +86,6 @@ dependencies {
     implementation(libs.serialization.json)
 
     implementation(libs.maps.compose)
+
+    implementation(libs.navigation.compose)
 }

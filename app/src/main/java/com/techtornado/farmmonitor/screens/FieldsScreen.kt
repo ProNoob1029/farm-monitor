@@ -18,24 +18,43 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.techtornado.farmmonitor.UIState
+import com.techtornado.farmmonitor.data.Land
+import com.techtornado.farmmonitor.data.Polygon
 
 @Composable
 fun FieldsScreen(
     modifier: Modifier = Modifier,
-    viewModel: FieldsViewModel = viewModel()
+    viewModel: FieldsViewModel = viewModel(),
+    navigateToId: (String) -> Unit,
+    navToAdd: () -> Unit
 ) {
-    val fakelist = remember {
-        listOf("plot 1", "plot 2","a","a","A")
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    when (val landList = state) {
+        is UIState.Error -> Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text("Womp womp", style = MaterialTheme.typography.headlineLarge.copy(color = MaterialTheme.colorScheme.error))
+        }
+        is UIState.Loading -> Loading(modifier.fillMaxSize())
+        is UIState.Succes<List<Polygon>> -> FieldsScreen(modifier, landList.result, navigateToId = navigateToId, navToAdd = navToAdd)
     }
-    val fakelist2 = remember {
-        listOf("1", "2","a","a","A")
-    }
+}
+
+@Composable
+fun FieldsScreen(
+    modifier: Modifier = Modifier,
+    landList: List<Polygon>,
+    navigateToId: (String) -> Unit,
+    navToAdd: () -> Unit
+) {
 
     Column(modifier = modifier){
 
@@ -45,7 +64,7 @@ fun FieldsScreen(
             modifier = Modifier.fillMaxWidth()
         ) {
             Box(){
-                Text("IONELA's fields" ,
+                Text("Your fields" ,
                     modifier.padding(16.dp),
                     style = MaterialTheme.typography.headlineLarge ,
                     fontStyle = FontStyle.Italic
@@ -58,10 +77,14 @@ fun FieldsScreen(
                 contentPadding = PaddingValues(16.dp)
             ) {
 
-                itemsIndexed(fakelist) { index, name ->
-                    Box(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp), contentAlignment = Alignment.Center) {
+                itemsIndexed(landList) { index, land ->
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp), contentAlignment = Alignment.Center) {
                         Surface(
-                            onClick = {},
+                            onClick = {
+                                navigateToId(land.id)
+                            },
                             color = MaterialTheme.colorScheme.primaryContainer,
                             shape = RoundedCornerShape(16.dp),
                             modifier = Modifier.height(100.dp)
@@ -70,17 +93,13 @@ fun FieldsScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(
-                                    name
-                                )
+                                Text(land.name)
                             }
                             Box(
                                 modifier = Modifier.fillMaxSize(),
                                 contentAlignment = Alignment.BottomCenter
                             ) {
-                                Text(
-                                    fakelist2[index]
-                                )
+                                Text(land.area.toString())
                             }
                         }
                     }
@@ -89,16 +108,14 @@ fun FieldsScreen(
             }
 
             FloatingActionButton(
-                onClick = {},
-                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                onClick = {navToAdd()},
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp),
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
                 Icon(Icons.Default.Add,"")
             }
         }
-
-
-
-
     }
 }

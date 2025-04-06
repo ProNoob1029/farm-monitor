@@ -8,7 +8,7 @@ data class Land(
     val polygon: Polygon,
     val currentWeather: Weather,
     val currentSoil: Soil,
-    val currentNdvi: NDVI,
+    val currentNdvi: NDVI?,
     val ndviHistory: NdviHistory,
     val forecast: Forecast
 ) {

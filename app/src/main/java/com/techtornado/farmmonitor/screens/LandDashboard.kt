@@ -29,6 +29,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,12 +42,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.techtornado.farmmonitor.UIState
 import com.techtornado.farmmonitor.data.Land
+import kotlin.math.roundToInt
 
 @Composable
 fun LandDashboard(
     modifier: Modifier = Modifier,
-    viewModel: LandDashboardViewModel = viewModel()
+    viewModel: LandDashboardViewModel = viewModel(),
+    navToAi: (String) -> Unit,
+    landId: String
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.loadData(landId)
+    }
     val landState by viewModel.landState.collectAsStateWithLifecycle()
 
     when (val land = landState) {
@@ -54,7 +61,7 @@ fun LandDashboard(
             Text("Womp womp", style = MaterialTheme.typography.headlineLarge.copy(color = MaterialTheme.colorScheme.error))
         }
         is UIState.Loading -> Loading(modifier.fillMaxSize())
-        is UIState.Succes<Land> -> LandDashboard(modifier, land.result)
+        is UIState.Succes<Land> -> LandDashboard(modifier, land = land.result, navToAi = navToAi)
     }
 }
 
@@ -62,6 +69,7 @@ fun LandDashboard(
 @Composable
 fun LandDashboard(
     modifier: Modifier = Modifier,
+    navToAi: (String) -> Unit,
     land: Land
 ) {
     val topAppBarScrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior()
@@ -94,9 +102,15 @@ fun LandDashboard(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(scaffoldPadding)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
+                .padding()
                 .verticalScroll(rememberScrollState()),
         ) {
+
+            val spacerHeight = remember { 16.dp }
+
+            Spacer(Modifier.height(spacerHeight))
+
             Map(
                 modifier = Modifier
                     .aspectRatio(1f)
@@ -107,27 +121,25 @@ fun LandDashboard(
                 onMapClick = {}
             )
 
-            val spacerHeight = remember { 16.dp }
-
             Spacer(Modifier.height(spacerHeight))
 
             val surfaceModifiers = remember {
                 Modifier.fillMaxWidth()
-                    .height(50.dp)
+                    .height(80.dp)
             }
 
             SurfaceButton(
                 onClick = {},
                 modifier = surfaceModifiers
             ) {
-                Text("Soil Stats")
+                Text("Soil Stats, moisture: ${land.currentSoil.moisture}")
             }
             Spacer(Modifier.height(spacerHeight))
             SurfaceButton(
                 onClick = {},
                 modifier = surfaceModifiers
             ) {
-                Text("Weather Stats")
+                Text("Weather Stats, temp: ${((land.currentWeather.main.temp - 273.15) * 100).roundToInt() / 100.0 }")
             }
             Spacer(Modifier.height(spacerHeight))
             SurfaceButton(
@@ -138,7 +150,7 @@ fun LandDashboard(
             }
             Spacer(Modifier.height(spacerHeight))
             SurfaceButton(
-                onClick = {},
+                onClick = { navToAi(land.polygon.id) },
                 modifier = surfaceModifiers
             ) {
                 Text("AI Predictions")
@@ -150,6 +162,7 @@ fun LandDashboard(
             ) {
                 Text("Edit & Delete")
             }
+            Spacer(Modifier.height(spacerHeight))
         }
     }
 }
@@ -161,7 +174,7 @@ fun SurfaceButton(onClick: () -> Unit, modifier: Modifier = Modifier, content: @
         color = MaterialTheme.colorScheme.primaryContainer,
         shape = RoundedCornerShape(16.dp)
     ) {
-        Box(modifier = modifier) {
+        Box(modifier = modifier, contentAlignment = Alignment.Center) {
             content()
         }
     }

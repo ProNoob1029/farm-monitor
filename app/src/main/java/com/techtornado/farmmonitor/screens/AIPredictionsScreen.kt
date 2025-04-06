@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,13 +22,20 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.techtornado.farmmonitor.AIViewModel
 import com.techtornado.farmmonitor.MainViewModel
+import com.techtornado.farmmonitor.data.Land
 
 @Composable
 fun AIPredictionsScreen(
     modifier: Modifier = Modifier,
-    viewModel: MainViewModel = viewModel()
+    viewModel: AIViewModel = viewModel(),
+    landid: String
 ) {
+    /*LaunchedEffect(Unit) {
+        viewModel.getAiResponse(land)
+    }*/
+
     val aiResponse by viewModel.aiResponse.collectAsStateWithLifecycle()
 
     Column(modifier = modifier) {
@@ -56,7 +64,7 @@ fun AIPredictionsScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Surface(
-                        onClick = {viewModel.getAiResponse()},
+                        onClick = {viewModel.getAiResponse(landid)},
                         color = MaterialTheme.colorScheme.primaryContainer,
                         shape = RoundedCornerShape(16.dp),
                         modifier = Modifier.height(100.dp)

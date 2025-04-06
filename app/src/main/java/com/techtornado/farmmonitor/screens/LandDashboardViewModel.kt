@@ -28,10 +28,10 @@ class LandDashboardViewModel: ViewModel() {
     val landState = MutableStateFlow<UIState<Land>>(UIState.Loading)
     private val httpClient = MonitorApplication.httpClient
 
-    init {
+    fun loadData(id: String) {
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val land = fetchLand("67f0faf1fd068c7a6383561a")
+                val land = fetchLand(id)
                 landState.update { UIState.Succes(land) }
             } catch (e: Exception) {
                 Log.e("LandDashboardViewModel", e.toString())
@@ -54,7 +54,7 @@ class LandDashboardViewModel: ViewModel() {
             polygon = polygon,
             currentWeather = currentWeather,
             currentSoil = soil,
-            currentNdvi = ndviHistory.sortedBy { it.dt }.last(),
+            currentNdvi = ndviHistory.sortedBy { it.dt }.lastOrNull(),
             ndviHistory = ndviHistory,
             forecast = forecast
         )
