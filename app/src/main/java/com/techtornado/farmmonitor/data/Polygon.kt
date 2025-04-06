@@ -5,9 +5,7 @@ package com.techtornado.farmmonitor.data
 
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.JsonIgnoreUnknownKeys
 
-@JsonIgnoreUnknownKeys
 @Serializable
 data class Polygon(
     val id: String,
@@ -17,13 +15,11 @@ data class Polygon(
     val area: Double,
     val user_id: String
 ) {
-    @JsonIgnoreUnknownKeys
     @Serializable
     data class GeoJson(
         val type: String,
         val geometry: Geometry
     ) {
-        @JsonIgnoreUnknownKeys
         @Serializable
         data class Geometry(
             val type: String,

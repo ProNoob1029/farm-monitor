@@ -5,8 +5,11 @@ import com.google.ai.client.generativeai.GenerativeModel
 import com.google.ai.client.generativeai.type.content
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.resources.Resources
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.json.Json
 
 class MonitorApplication: Application() {
     companion object {
@@ -19,6 +22,11 @@ class MonitorApplication: Application() {
 
         httpClient = HttpClient(OkHttp) {
             install(Resources)
+            install(ContentNegotiation) {
+                json(Json {
+                    ignoreUnknownKeys = true
+                })
+            }
             defaultRequest {
                 host = "api.agromonitoring.com/agro/1.0"
             }

@@ -17,6 +17,7 @@ import com.techtornado.farmmonitor.resources.NDVIHistoryResource
 import com.techtornado.farmmonitor.resources.PolygonsResource
 import com.techtornado.farmmonitor.resources.SatImgResource
 import com.techtornado.farmmonitor.resources.SoilResource
+import io.ktor.client.call.body
 import io.ktor.client.plugins.resources.get
 import io.ktor.client.request.get
 import io.ktor.client.statement.bodyAsText
@@ -42,17 +43,17 @@ class MainViewModel: ViewModel() {
     val aiModel = MonitorApplication.aiModel
 
     fun getAiResponse() { viewModelScope.launch { try {
-        val plots: List<Polygon> = client.get(PolygonsResource()).bodyAsText().decode()
+        val plots: List<Polygon> = client.get(PolygonsResource()).body()
         Log.i("MainViewModel", "plots fetched successfully")
         val plot = plots[0]
-        val ndviHistory: List<NDVI> = client.get(NDVIHistoryResource(polygon_id = plot.id)).bodyAsText().decode()
+        val ndviHistory: List<NDVI> = client.get(NDVIHistoryResource(polygon_id = plot.id)).body()
         Log.i("MainViewModel", "ndvi fetched successfully")
-        val currentWeather: Weather = client.get(CurrentWeatherResource(lat = plot.center[1], lon = plot.center[0])).bodyAsText().decode()
+        val currentWeather: Weather = client.get(CurrentWeatherResource(lat = plot.center[1], lon = plot.center[0])).body()
         Log.i("MainViewModel", "weather fetched successfully")
         Log.i("MainViewModel", "current date: ${currentWeather.dt.convertTimestampToReadableFormat()}")
-        val forecast: Forecast = client.get(ForecastResource(lat = plot.center[1], lon = plot.center[0])).bodyAsText().decode()
+        val forecast: Forecast = client.get(ForecastResource(lat = plot.center[1], lon = plot.center[0])).body()
         Log.i("MainViewModel", "forecast fetched successfully")
-        val soil: Soil = client.get(SoilResource(polyid = plot.id)).bodyAsText().decode()
+        val soil: Soil = client.get(SoilResource(polyid = plot.id)).body()
         Log.i("MainViewModel", "soil fetched successfully")
 
         val response = aiModel.generateContent(
